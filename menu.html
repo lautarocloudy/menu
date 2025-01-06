@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejecutar Archivo .bat Condicionalmente</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e2e8f0;
+            /* Gris suave */
+            background-image: url('90419.jpg');
+            /* Cambia esta ruta a la de tu imagen */
+            background-size: cover;
+            /* Hace que la imagen cubra toda la pantalla */
+            background-position: center;
+            /* Centra la imagen */
+            background-repeat: no-repeat;
+            /* Evita que la imagen se repita */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            /* Alinea la imagen y los botones a la parte superior */
+            width: 80%;
+            /* Ajusta el ancho a un 80% */
+            max-width: 1200px;
+            /* Máximo de 1200px de ancho */
+            height: auto;
+            padding: 40px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        /* Sección principal con los botones grandes */
+        .main-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            /* Alinea los elementos al principio (arriba) */
+            align-items: center;
+            height: auto;
+            /* Ajusta la altura según el contenido */
+        }
+
+        .img-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 13%;
+            /* Elimina el margen inferior */
+        }
+
+        .img-container img {
+            width: 80%;
+            /* Imagen más pequeña */
+            max-width: 947px;
+            /* Máximo ancho de la imagen */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+            border-radius: 10px;
+        }
+
+        /* Sección de botones con imagen uno al lado del otro */
+        .button-container {
+            display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Espaciado vertical entre filas */
+    width: 100%;
+        }
+
+        .button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    /* Espaciado horizontal entre botones */
+}
+
+.button-image,
+.button-image2,
+.button-image3,
+.button-image4 {
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    width: 180px;
+    height: 80px;
+    font-weight: bold;
+    color: #333;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+        /* Sección lateral con texto y botones pequeños */
+        .side-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .text-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .text-box:hover {
+            background-color: #e2e8f0;
+        }
+
+        .btn-text {
+            position: relative;
+            /* Posición relativa para manejar el contenido interno */
+            display: flex;
+            /* Flexbox para alinear imagen y texto */
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            /* background-color: #f9f9f9; */
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            height: 40px;
+            /* Ajustar el alto para acomodar las imágenes */
+            overflow: hidden;
+            /* Evitar que contenido adicional sobresalga */
+        }
+
+        .btn-text img {
+            width: 70%;
+            /* Tamaño de la imagen dentro del enlace */
+            height: auto;
+            margin-right: 10px;
+            /* Espaciado entre la imagen y el texto */
+        }
+
+        /* Línea divisoria */
+        .divider {
+            height: 100%;
+            /* Abarca toda la altura */
+            width: 2px;
+            background-color: #007bff;
+            margin: 0 20px;
+        }
+
+        /* Estilo para mostrar un mensaje */
+        .message {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        /* Estilos para el fondo del modal */
+        .modal {
+            display: none;
+            /* Inicialmente está oculto */
+            position: fixed;
+            /* Fija el modal en la pantalla */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Fondo semitransparente */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilo para el contenido del modal */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botón para cerrar el modal */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sección principal con los botones grandes -->
+        <div class="main-section">
+            <!-- Contenedor de la imagen encima de los botones -->
+            <div class="img-container">
+                <img src="logo-smartceo.jpg" alt="Imagen de ejemplo">
+            </div>
+
+            <div class="button-container">
+                <!-- Grupo de botones superiores -->
+                <div class="button-row">
+                    <div class="button-image" style="background-image: url('ventagi.jpeg');"></div>
+                    <div class="button-image2" style="background-image: url('acusueldo.jpeg');"></div>
+                    <div class="button-image3" style="background-image: url('ivaco.jpeg');"></div>
+                </div>
+            
+                <!-- Botón adicional debajo -->
+                <div class="button-image4" style="background-image: url('ventagi2.JPG'); margin-top: 5px;"></div>
+            </div>
+            
+        </div>
+
+        <!-- Línea divisoria vertical -->
+        <div class="divider"></div>
+
+        <!-- Sección lateral con texto y botones pequeños -->
+        <div class="side-section">
+            <div class="text-box"><p>Aquí puedes encontrar información sobre las últimas noticias y 
+                actualizaciones. Mantente al día con los eventos más recientes.</p></div>
+            <a href="https://smartceo.com.ar/smart-news/" class="btn-text"><img src="noticias.jpeg"
+                    alt="Icono de noticias"></a>
+            <div class="text-box">Esta sección contiene videos educativos que
+                te ayudarán a mejorar tus habilidades y aprender nuevos conceptos. ¡Mira ahora!</div>
+            <a href="https://smartceo.com.ar/capacitaciones/" class="btn-text"><img src="capacitacion.jpeg"
+                    alt="Icono de noticias"></a>
+            <div class="text-box">Podras ingresar a la pagina de administracion de Smart Ceo, si no tiene acceso
+                pida la generacion de una clave para ingresar.
+            </div>
+            <a href="https://smart-ceo.netlify.app/" class="btn-text"><img src="Administracion.jpeg"
+                    alt="Icono de noticias"></a>
+        </div>
+    </div>
+
+    <!-- Mensaje de estado -->
+    <div class="message" id="message"></div>
+
+    <!-- Modal de error -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Error 909</h2>
+            <p>No autorizado para ejecutar el archivo .bat.</p>
+        </div>
+    </div>
+
+    <script>
+        // Función para manejar la ejecución del archivo .bat condicionalmente
+        document.querySelector(".button-image").addEventListener("click", async () => {
+            try {
+                // Realizar la consulta a la API
+                const response = await fetch('https://smartceo-back.vercel.app/api/clientes/pago?cuit=20336669998');
+                const result = await response.json();
+
+                // Verificar el valor del campo "pago"
+                if (result.status === "success" && result.pago === 1) {
+                    // Si `pago` es 1, proceder con la ejecución del archivo .bat
+                    const batResponse = await fetch('http://localhost:3000/run-bat');
+                } else {
+                    // Si `pago` no es 1, mostrar el modal de error
+                    document.getElementById("errorModal").style.display = "flex"; // Muestra el modal
+                }
+            } catch (error) {
+                console.error("Error al consultar la API:", error);
+                document.getElementById("message").textContent = "Error al consultar la API.";
+                document.getElementById("message").style.color = "red";
+            }
+        });
+
+        // Cerrar el modal al hacer clic en la "X"
+        document.getElementById("closeModal").addEventListener("click", () => {
+            document.getElementById("errorModal").style.display = "none";
+        });
+    </script>
+</body>
+
+</html>
